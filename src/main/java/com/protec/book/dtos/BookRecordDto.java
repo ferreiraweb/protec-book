@@ -9,7 +9,7 @@ import org.springframework.beans.BeanUtils;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public record BookRecordDTO(
+public record BookRecordDto(
        @NotNull(message = "nome não pode ser nulo")
        @Size(max = 50, message = "Máximo 50 caracteres")
        String nome,
@@ -22,7 +22,8 @@ public record BookRecordDTO(
         EBookType tipo
         ) {
 
-    public Book MapperFromDTO() {
+    @NotNull
+    public Book ToEntity() {
 
         Book book = new Book();
        /*

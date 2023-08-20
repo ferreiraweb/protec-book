@@ -20,16 +20,13 @@ public class Book implements Serializable {
     private Long id;
     @Column(nullable = false, length = 50)
     private String nome;
-    @Column(nullable = true, length = 30)
-    private String editora;
-    @Column(length = 30)
-    private String autor;
     @Column
     private Date dataPublicacao;
     @Column(length = 40)
     private String categoria;
     @Column(nullable = false)
     private BigDecimal valor;
+    @Column(nullable = false)
    @Enumerated(EnumType.STRING)
     private EBookType tipo;
 
@@ -39,7 +36,6 @@ public class Book implements Serializable {
     }
 
     // gettes and setters -------------------------
-
 
     public Long getId() {
         return id;
@@ -55,22 +51,6 @@ public class Book implements Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getEditora() {
-        return editora;
-    }
-
-    public void setEditora(String editora) {
-        this.editora = editora;
-    }
-
-    public String getAutor() {
-        return autor;
-    }
-
-    public void setAutor(String autor) {
-        this.autor = autor;
     }
 
     public Date getDataPublicacao() {
@@ -105,7 +85,8 @@ public class Book implements Serializable {
         this.tipo = tipo;
     }
 
-    // hasCode e equals
+
+    // hasCode, equals e toString
 
 
     @Override
@@ -113,11 +94,23 @@ public class Book implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Book book = (Book) o;
-        return Objects.equals(id, book.id) && Objects.equals(nome, book.nome) && Objects.equals(editora, book.editora) && Objects.equals(autor, book.autor) && Objects.equals(dataPublicacao, book.dataPublicacao) && Objects.equals(categoria, book.categoria) && Objects.equals(valor, book.valor) && tipo == book.tipo;
+        return Objects.equals(id, book.id) && Objects.equals(nome, book.nome) && Objects.equals(dataPublicacao, book.dataPublicacao) && Objects.equals(categoria, book.categoria) && Objects.equals(valor, book.valor) && tipo == book.tipo;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nome, editora, autor, dataPublicacao, categoria, valor, tipo);
+        return Objects.hash(id, nome, dataPublicacao, categoria, valor, tipo);
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", dataPublicacao=" + dataPublicacao +
+                ", categoria='" + categoria + '\'' +
+                ", valor=" + valor +
+                ", tipo=" + tipo +
+                '}';
     }
 }
