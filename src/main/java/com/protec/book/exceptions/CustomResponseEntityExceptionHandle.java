@@ -2,42 +2,46 @@ package com.protec.book.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import org.springframework.web.context.request.WebRequest;
 
 import java.util.Date;
 
 @RestControllerAdvice
-public class CustomizedResponseEntityExceptionHandle extends ResponseEntityExceptionHandler {
+public class CustomResponseEntityExceptionHandle extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    public final ResponseEntity<CustomRecordExceptionResponse> handleAllException(Exception ex) {
+    public final ResponseEntity<CustomResponseExceptionRecord> handleGlobalException(Exception ex) {
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(getCustomRecordExceptionResponse(ex));
     }
 
     @ExceptionHandler(BookNotExistsException.class)
-    public ResponseEntity<?> handleBookNotExistsException(BookNotExistsException ex) {
+    public ResponseEntity<CustomResponseExceptionRecord> handleBookNotExistsException
+            (BookNotExistsException ex) {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ex);
+                .body(getCustomRecordExceptionResponse(ex));
+    }
+
+    @ExceptionHandler(IdMustBeNonNullException.class)
+    public ResponseEntity<CustomResponseExceptionRecord> handleIdMustBeNonNullException(
+            IdMustBeNonNullException ex
+    ) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(getCustomRecordExceptionResponse(ex));
     }
 
     /* ------------------------------------------------------------------------------------ */
 
-    private CustomRecordExceptionResponse getCustomRecordExceptionResponse(Exception ex){
-        CustomRecordExceptionResponse exceptionResponse = new CustomRecordExceptionResponse(
+    private CustomResponseExceptionRecord getCustomRecordExceptionResponse(Exception ex) {
+        CustomResponseExceptionRecord exceptionResponse = new CustomResponseExceptionRecord(
                 new Date(),
                 ex.getMessage(),
                 null
         );
-
-        System.out.println(ex);
 
         return exceptionResponse;
     }
