@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
 
-    public List<Book> findBooksByCategoria(String categoria);
-    public List<Book> findBooksByTipo(EBookType tipo);
+    List<Book> findBooksByCategoria(String categoria);
+    List<Book> findBooksByTipo(EBookType tipo);
 }
