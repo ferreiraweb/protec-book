@@ -35,7 +35,15 @@ public class Book implements Serializable {
     public Book(){
     }
 
-    // gettes and setters -------------------------
+    public Book(String nome, Date dataPublicacao, String categoria, BigDecimal valor, EBookType tipo) {
+        this.nome = nome;
+        this.dataPublicacao = dataPublicacao;
+        this.categoria = categoria;
+        this.valor = valor;
+        this.tipo = tipo;
+    }
+
+// gettes and setters -------------------------
 
     public Long getId() {
         return id;

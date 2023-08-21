@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 public class BookService {
@@ -18,19 +18,17 @@ public class BookService {
     private BookRepository repository;
 
     public BookRecordDto save(@NotNull BookRecordDto bookDto) {
-       Book book = repository.save(bookDto.dtoToBook());
+        Book book = repository.save(bookDto.dtoToBook());
 
         return BookRecordDto.bookToDto(book);
     }
 
     public BookRecordDto findById(Long id) throws BookNotExistsException {
-       Book book = this.repository.findById(id)
-               .orElseThrow(() -> new BookNotExistsException("Livro não encontrado na base de dados"));
+        Book book = this.repository.findById(id)
+                .orElseThrow(() -> new BookNotExistsException("Livro não encontrado na base de dados"));
 
-       return BookRecordDto.bookToDto(book);
-
-    };
-
+        return BookRecordDto.bookToDto(book);
+    }
 
     public BookRecordDto update(BookRecordDto dto) {
 
@@ -48,14 +46,17 @@ public class BookService {
         book.setValor(dto.valor());
         book.setTipo(dto.tipo());
 
-
         return BookRecordDto.bookToDto(this.repository.save(book));
-
-
     }
 
+    public List<BookRecordDto> getAll() {
+        return this.repository.findAll()
+                .stream()
+                .map(book -> BookRecordDto.bookToDto(book))
+                .toList();
+    }
 
-
-
-
+    public void delete(Long id) {
+        this.repository.deleteById(id);
+    }
 }
