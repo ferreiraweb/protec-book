@@ -34,6 +34,13 @@ public class CustomResponseEntityExceptionHandle extends ResponseEntityException
                 .body(getCustomRecordExceptionResponse(ex));
     }
 
+
+    public ResponseEntity<CustomResponseExceptionRecord> handleBookNameCannotBeRepeatedException(
+            BookNameCannotBeRepeatedException ex )
+    {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getCustomRecordExceptionResponse(ex));
+    }
+
     /* ------------------------------------------------------------------------------------ */
 
     private CustomResponseExceptionRecord getCustomRecordExceptionResponse(Exception ex) {

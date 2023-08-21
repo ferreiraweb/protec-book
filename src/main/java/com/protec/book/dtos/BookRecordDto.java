@@ -6,11 +6,14 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public record BookRecordDto(
         Optional<Long> id,
@@ -39,7 +42,7 @@ public record BookRecordDto(
     public static BookRecordDto bookToDto(Book entity) {
 
         BookRecordDto dto = new BookRecordDto(
-                Optional.of(entity.getId()),
+                Optional.ofNullable(entity.getId()),
                 entity.getNome(),
                 entity.getDataPublicacao(),
                 entity.getCategoria(),
@@ -49,6 +52,8 @@ public record BookRecordDto(
 
         return dto;
     }
+
+
 
 
 }

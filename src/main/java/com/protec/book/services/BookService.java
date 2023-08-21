@@ -2,6 +2,7 @@ package com.protec.book.services;
 
 import com.protec.book.domain.Book;
 import com.protec.book.dtos.BookRecordDto;
+import com.protec.book.exceptions.BookNameCannotBeRepeatedException;
 import com.protec.book.exceptions.BookNotExistsException;
 import com.protec.book.exceptions.IdMustBeNonNullException;
 import com.protec.book.repositories.BookRepository;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookService {
@@ -18,6 +20,13 @@ public class BookService {
     private BookRepository repository;
 
     public BookRecordDto save(@NotNull BookRecordDto bookDto) {
+
+        Optional<Book> savedBook = repository.findBookByNome(bookDto.nome());
+
+        if (savedBook.isPresent()) {
+            throw new BookNameCannotBeRepeatedException("Nome do livro já existe (" + bookDto.nome() + ")");
+        }
+
         Book book = repository.save(bookDto.dtoToBook());
 
         return BookRecordDto.bookToDto(book);

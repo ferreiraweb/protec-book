@@ -26,7 +26,7 @@ public class BookRepositoryTest {
 
     @BeforeEach
     void before() {
-        book = new Book("UML 2 - uma abordagem prática",
+        book = new Book("UML 2 - uma abordagem prática ",
                 new Date(2021, 2, 10),
                 "Eng SW", new BigDecimal(156),
                 EBookType.TECNICO);
@@ -35,7 +35,7 @@ public class BookRepositoryTest {
 
         listBooks = new ArrayList<Book>();
         for (int i = 1; i < 4; i++) {
-            Book book = new Book("UML 2 - uma abordagem prática",
+            Book book = new Book("UML 2 - uma abordagem pratica " + i,
                     new Date(2021, 2 + i, 10 + i),
                     categories[i], new BigDecimal(22 * i),
                     EBookType.TECNICO);
@@ -155,11 +155,11 @@ public class BookRepositoryTest {
         listBooks.forEach(itemBook -> repository.save(itemBook));
 
         List<Book> foundBooks = repository
-                .findBookByNomeECategoria("UML 2 - uma abordagem prática", "Eng SW");
+                .findBookByNomeECategoria("UML 2 - uma abordagem pratica 1", "Eng SW");
 
         System.out.println(foundBooks);
         /* then */
         assertNotNull(foundBooks);
-        assertEquals(2, foundBooks.size());
+        assertEquals(1, foundBooks.size());
     }
 }
