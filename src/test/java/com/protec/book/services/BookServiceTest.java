@@ -4,6 +4,7 @@ import com.protec.book.domain.Book;
 import com.protec.book.domain.EBookType;
 import com.protec.book.dtos.BookRecordDto;
 import com.protec.book.exceptions.BookNameCannotBeRepeatedException;
+import com.protec.book.exceptions.BookNotExistsException;
 import com.protec.book.repositories.BookRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -73,6 +74,21 @@ public class BookServiceTest {
     }
 
     @Test
+    void findById_deve_lancar_excecao_se_book_nao_existe() {
+
+        /* given */
+        when(repository.findById(anyLong()))
+                .thenThrow(new BookNotExistsException("Livro nao econtrado"));
+
+        /* when */
+
+        assertThrows(
+                BookNotExistsException.class,
+                () -> service.findById(anyLong())
+        );
+    }
+
+    @Test
     void save_deve_salvar_book() {
 
         /* when */
@@ -95,9 +111,10 @@ public class BookServiceTest {
         when(repository.findBookByNome(bookDto.nome())).thenReturn(Optional.of(book));
 
         /* then */
-        assertThrows(BookNameCannotBeRepeatedException.class,
-                () -> service.save(bookDto),
-                () -> "Nome de livro já cadastrado");
+        assertThrows(
+                BookNameCannotBeRepeatedException.class,
+                () -> service.save(bookDto)
+        );
 
         verify(repository, never()).save(any(Book.class));
 
